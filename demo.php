@@ -1,62 +1,98 @@
-<?php
-# incializar una nueva sesion de cURL; ch=cURL handle
-const API_URL="https://whenisthenextmcufilm.com/api";
-$ch=curl_init(API_URL);
-#Indicar que queremos recibir el resultado de la peticion y no mostrarlo en pantalla.
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-/*Ejecutar la peteción y guardamos el resultado*/
-$result=curl_exec($ch);
-//una alternativa seria utilizar file_get_contents
-//$result=file_get_contents(API_URL);
-$data=json_decode($result,true);
-curl_close($ch);
-//var_dump($data)
-?>
 
-<head>
-	<meta charset="utf-8">
-	<title>La proxima pelicula de marvel</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css"/>
-</head>
+	<?php
+		//no puedes poner numero al principio ni otro $
+		$name="Eric";
+		$isDev = true;
+		$age = 39;
+		//simbolo + no sirve para concatenar el . es el que sirve para concatenar
+		$newAge=44+'1';
+		$isOld=$age > 40;
+		//Globales
+		define('LOGO_URL', 'https://upload.wikimedia.org/wikipedia/commons/2/27/PHP-logo.svg');
+		//constante
+		const nombre='Eric';
+		$output="Hola ". $name . " con una edad de " . $age;
+		//$output.=", y es guapo";
+		/*
+		var_dump($name);
+		var_dump($age);
+		var_dump($isDev);
+		echo gettype($name);
+		echo is_bool($isDev);
+		//IF
+		*/
+		/*if($isOld){
+			echo "<h2>Eres viejo, lo siento</h2>";
+		}elseif($isDev){
+			echo "No eres viejo, pero eres Dev estas jodido";
+		}
+		else{
+			echo "<h2>Eres joven</h2>";
+		}*/
+		
+		//if Ternaria
+		/*
+		$outputAge=$isOld
+			?'Eres viejos , lo siento'
+			:'Eres joven, guay';
+		*/
+		 //Esto no funciona puede ser por la version no se.
+		 $outputAge = match (true) {
+		     $age < 2 => 'Eres un bebé',
+		     $age < 10 => 'Eres un niño',
+		     $age < 18 => 'Eres un adolescente',
+		     $age >= 18 => 'Eres mayor de edad',
+		     $age < 40 => 'Eres un adulto joven',
+		     default => 'Eres un adulto viejo',
+		 };
+		
+		 //mas entendible que if
+	?>
+		<?php if ($isOld) : ?>
+			<h2>Eres viejo lo siento</h2>
+		<?php elseif($isDev): ?>
+			<h2>No eres viejo, pero eres Dev. Estas jodido.</h2>
+		<?php else : ?>
+			<h2>Eres joven felicidades</h2>
+		<?php endif ; ?> 
+	<?php
 
-<main>
-	<pre style="font-size: 8px; overflow:scroll; height: 250px;">
-		<?=var_dump($data)?>
-	</pre>	
-	<section>
-		<img src="<?= $data['poster_url']; ?>" width="200" alt="poster de <?=$data['title']; ?>"
-		style="border-radius: 16px"/>
-	</section>
+		//Arrays
+		$bestLanguages=["PHP","Javascript","Python",1,2];
+		$bestLanguages[3]="Java";
+		$bestLanguages[]="Typescript";
 
-	<hgroup>
-		<h2><?= $data["title"]; ?> se estrena en <?= $data["days_until"]; ?> dias.</h2>
-		<p>Fecha de estreno: <?= $data["release_date"]; ?></p>
-		<p>La siguiente es <?= $data["following_production"]["title"] ?></p>
-	</hgroup>
-</main>
+		$person=[
+			"name"=>"Eric",
+			"age"=>78,
+			"isDev"=>true,
+			"languages"=>["PHP","Javascript","Python"],
+		];
+
+		$person["name"]="Laura";
+		$person["languages"][]="Java";
+		?>
+
+		<h3>El mejor lenguaje es <?=$bestLanguages[0]?></h3>
+		<ul>
+			<?php foreach ($bestLanguages as $key =>$language ): ?> 
+				<li><?=$key." ".$language?></li>
+			<?php endforeach; ?>		
+		</ul>
 
 
-
-
+<img src="<?=LOGO_URL?>" alt="PHP Logo" width="200">	
+<h1>	
+	<?= $outputAge ?>
+</h1>
 <style type="text/css">
 	:root{
 		color-scheme:light dark;
 	}
+	body{
 
-	section{
-		dissplay:flex;
-		justify-content: center;
-
-	}
-	hgroup{
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		text-align: center;
-	}
-	img{
-		margin:0 auto;
-		display: flex;
+		display:grid;
+		place-content:center;
 	}
 
 
